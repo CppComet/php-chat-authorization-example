@@ -1,0 +1,59 @@
+in last article i we wright siple php chat, and now we wright php chat with autarization.
+
+
+Besides of channels where each user, who know channel’s name, can subscribe it, here is an opportunity to authorize users on the comet-server and send private messages to users by their IDs. User authorization involved several steps. 
+
+The first step – it is sending user’s ID and a random hash in your system to the comet-server.
+
+<pre>INSERT INTO users_auth (id, hash )VALUES (1, 'auth_hash1');</pre>
+
+<ul>
+    <li>Here the line with auth_hash1 – an authorization text key. You can generate it by yourself on your server and send it to comet-server via insert query in table users_auth, then you pass on JavaScript to authorization a certain user on the comet-server;</li>
+    <li>Numeric_user’s_id – it is user’s ID on your site, any positive number not longer than 9 digits;
+    dev_id – it’s a public developer’s identifier.</li>
+</ul>
+
+<pre>
+// At the second stage these data (user’s ID and hash) need to be passed to JavaScript Api.
+$(document).ready(function()
+{
+    CometServer().start({dev_id:1, user_key:"auth_hash1", user_id:"Numeric_user’s_id" })
+});
+</pre>
+
+And now user can be successfully authorized on the comet-server.
+
+If some user at that moment is offline, than sent message is placed into a queue of messages and would be delivered when it user will be online.
+
+The main purpose of mentioned queue is delivering messages after a short-term user’s offline. For example, in those cases when user is updating some site’s page where was opened a connection, and this user goes offline approximately for one minute.
+
+
+https://comet-server.com/wiki/doku.php/en:comet:authentication
+https://comet-server.com/wiki/doku.php/en:comet:cometql#table_users_messages
+https://comet-server.com/wiki/doku.php/comet:faq:realtime-users-list
+
+
+
+In last article we wright simple php chat, and now we add to chat counter of users online.
+ 
+For this propose in javascript api need subscribe to pipe with name track_* for example track_online
+
+<pre>
+CometServer().subscription("track_online.subscription", function(msg)
+{
+    // Обработка события что кто то зашёл на сайт и подписался на канал track_online
+    $("counter").html($("counter").html()/1 + 1)
+});	
+
+CometServer().subscription("track_online.unsubscription", function(msg)
+{
+    // Обработка события что кто то покинул сайт и/или отписался от канала track_online
+    $("counter").html($("counter").html()/1 - 1
+});
+</pre>
+
+Now we will get notification from CppComet when anybody will subscribe or unsubscribe chenal track_online. 
+This mean that when user open page javascript subscribe to pipe, and when user close page javascript will unsubscribe from pipe.
+
+
+SELECT * FROM users_in_pipes WHERE name = "track_online";
