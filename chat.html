@@ -1,7 +1,15 @@
-in last article i we wright siple php chat, and now we wright php chat with autarization.
 
+<h2>Introduction</h2>
 
-Besides of channels where each user, who know channel’s name, can subscribe it, here is an opportunity to authorize users on the comet-server and send private messages to users by their IDs. User authorization involved several steps. 
+<p>In last article about CppComet we wright siple php chat, and now we wright php chat with autarization.</p>
+
+<p>In CppComet besides of channels where each user, who know channel’s name, can subscribe it, here is an opportunity to authorize users on the CppComet and send private messages to users by their IDs.</p>
+
+<h2>Authorization code</h2>
+
+User authorization involves several steps.
+ 
+<h3>The first step</h3>
 
 The first step – it is sending user’s ID and a random hash in your system to the comet-server.
 
@@ -13,15 +21,27 @@ The first step – it is sending user’s ID and a random hash in your system to
     dev_id – it’s a public developer’s identifier.</li>
 </ul>
 
+<h3>The second step</h3>
+
+At the second stage these data (user’s ID and hash) need to be passed to JavaScript Api.
+
 <pre>
-// At the second stage these data (user’s ID and hash) need to be passed to JavaScript Api.
 $(document).ready(function()
 {
-    CometServer().start({dev_id:1, user_key:"auth_hash1", user_id:"Numeric_user’s_id" })
+    CometServer().start({dev_id:15, user_key:"auth_hash1", user_id:"Numeric_user’s_id" })
 });
 </pre>
 
-And now user can be successfully authorized on the comet-server.
+And now user can be successfully authorized on the CppComet.
+
+
+<h2>Sending and resiving private messages</h2>
+
+https://comet-server.com/wiki/doku.php/en:comet:cometql#table_users_messages
+
+<pre>
+INSERT INTO users_messages (id, event, message)VALUES (2, 'event', 'message');
+</pre>
 
 If some user at that moment is offline, than sent message is placed into a queue of messages and would be delivered when it user will be online.
 
@@ -57,3 +77,8 @@ This mean that when user open page javascript subscribe to pipe, and when user c
 
 
 SELECT * FROM users_in_pipes WHERE name = "track_online";
+
+
+
+<h2>Summary</h2>
+
