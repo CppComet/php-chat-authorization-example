@@ -5,6 +5,8 @@
 
 <p>In CppComet besides of channels where each user, who know channel’s name, can subscribe it, here is an opportunity to authorize users on the CppComet and send private messages to users by their IDs.</p>
 
+Alsow for autorized users we can see detect when user was online.
+
 <h2>Authorization code</h2>
 
 User authorization involves several steps.
@@ -39,6 +41,7 @@ And now user can be successfully authorized on the CppComet.
 
 https://comet-server.com/wiki/doku.php/en:comet:cometql#table_users_messages
 
+For sending privet message to user need send this query:
 <pre>
 INSERT INTO users_messages (id, event, message)VALUES (2, 'event', 'message');
 </pre>
@@ -52,7 +55,19 @@ https://comet-server.com/wiki/doku.php/en:comet:authentication
 https://comet-server.com/wiki/doku.php/en:comet:cometql#table_users_messages
 https://comet-server.com/wiki/doku.php/comet:faq:realtime-users-list
 
+And now we try use autorization on CppComet on practic example.
 
+at ferst we need create database. In databese will be 2 tables:
+
+users and messages.
+
+the users table for saving data about users
+
+id, password, name
+
+the messages table for saving chat messages history, will hav columns
+
+id, 
 
 In last article we wright simple php chat, and now we add to chat counter of users online.
  
